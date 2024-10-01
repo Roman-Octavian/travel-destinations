@@ -25,5 +25,5 @@ const server = app.listen(PORT, () => {
   const address = server.address();
   const port = typeof address === 'string' ? address : address.port;
   console.log('\nExpress is running on:\n');
-  console.log(`\x1b[36mhttp://localhost:${PORT}\x1b[0m\n`);
+  console.log(`\x1b[36mhttp://localhost:${port}\x1b[0m\n`);
 });
