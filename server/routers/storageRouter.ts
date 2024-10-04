@@ -18,7 +18,7 @@ router.post('/storage/upload', upload.single('file'), async (req, res) => {
       } satisfies UploadResponse);
     }
 
-    res.status(201).json({ success: true, url: url });
+    res.status(201).json({ success: true, url: url } satisfies UploadResponse);
   } catch (e) {
     console.error(e);
     res
