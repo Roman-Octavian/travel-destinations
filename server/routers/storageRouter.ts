@@ -12,12 +12,10 @@ router.post('/storage/upload', upload.single('file'), async (req, res) => {
     const url = await createBlob({ blob: blob, blobName: req.file.originalname });
 
     if (url == null) {
-      res
-        .status(500)
-        .json({
-          success: false,
-          message: `Failed to upload ${req.file.originalname}`,
-        } satisfies UploadResponse);
+      res.status(500).json({
+        success: false,
+        message: `Failed to upload ${req.file.originalname}`,
+      } satisfies UploadResponse);
     }
 
     res.status(201).json({ success: true, url: url });
@@ -48,19 +46,19 @@ router.post('/storage/delete', async (req, res) => {
     }
 
     if (del.errorCode != null) {
-      res
-        .status(500)
-        .json({
-          success: false,
-          message: `Failed to delete ${filename}`,
-          response: del,
-        } satisfies DeleteResponse);
+      res.status(500).json({
+        success: false,
+        message: `Failed to delete ${filename}`,
+        response: del,
+      } satisfies DeleteResponse);
     }
 
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true } satisfies DeleteResponse);
   } catch (e) {
     console.error(e);
-    res.status(500).json({ success: false, message: 'Internal Server Error' });
+    res
+      .status(500)
+      .json({ success: false, message: 'Internal Server Error' } satisfies DeleteResponse);
   }
 });
 
