@@ -9,6 +9,9 @@
     "sleep3s": "node -e \"setTimeout(() => process.exit(0), 3000)\"",
     "types": "tsc -p tsconfig.json --noEmit"
   },
+  "dependencies": {
+    "@packages/types": "*"
+  },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
