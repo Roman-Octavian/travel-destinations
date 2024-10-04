@@ -42,14 +42,17 @@ async function getContainerClient(): Promise<ContainerClient | null> {
  * Server-side only
  * @param obj.blob item to upload in the form of a NodeJS "Blob"
  * @param obj.blobName the name of the file being uploaded
+ * @param obj.blobMimeType the type of the file, otherwise Azure will always set to `application/octet-stream`
  * @returns a public URL pointing to the upload or null in case of failure
  */
 export async function createBlob({
   blob,
   blobName,
+  blobMimeType,
 }: {
   blob: Blob;
   blobName: string;
+  blobMimeType: string;
 }): Promise<string | null> {
   try {
     const containerClient = await getContainerClient();
@@ -68,6 +71,11 @@ export async function createBlob({
         const upload = await blockBlobClient.upload(
           Buffer.from(await blob.arrayBuffer()),
           blob.size,
+          {
+            blobHTTPHeaders: {
+              blobContentType: blobMimeType,
+            },
+          },
         );
         if (upload.etag !== null) {
           return blockBlobClient.url;

@@ -9,7 +9,11 @@ let upload = multer();
 router.post('/storage/upload', upload.single('file'), async (req, res) => {
   try {
     const blob = new Blob([req.file.buffer]);
-    const url = await createBlob({ blob: blob, blobName: req.file.originalname });
+    const url = await createBlob({
+      blob: blob,
+      blobName: req.file.originalname,
+      blobMimeType: req.file.mimetype,
+    });
 
     if (url == null) {
       res.status(500).json({

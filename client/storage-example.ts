@@ -20,6 +20,7 @@ submit.addEventListener('click', async () => {
     if (upload.success) {
       image.src = upload.url;
       image.classList.remove('hidden');
+      window.open(upload.url, '_blank');
     }
   } else {
     missingFiles.classList.remove('hidden');
