@@ -10,9 +10,74 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <title>Travel Destinations</title>
   </head>
-  <body>
-    <main class="h-[100vh] flex justify-center items-center">
-      <h1 id="h1" class="flex text-white xs:text-4xl sm:text-7xl md:text-9xl left-eye"></h1>
+  <body class="text-white lg:flex h-[100vh]">
+    <!-- buger menu -->
+    <div class="lg:hidden p-4 pt-7">
+      <button id="burger-menu" class="" aria-label="Open menu">
+        <img src="./burger-icon.svg" alt="" />
+      </button>
+    </div>
+    <!-- menu contents -->
+    <div
+      id="navMenu"
+      class="fixed flex flex-col h-full inset-0 z-50 bg-gray-800 text-white transform translate-x-full transition-transform lg:translate-x-0 lg:static lg:flex lg:flex-col lg:w-64"
+    >
+      <div class="logo-container flex justify-between px-6 pt-6">
+        <a class="logo" href="">WAYFARER</a>
+        <!-- Close Icon for Mobile (hidden on desktop) -->
+        <button id="closeMenuButton" aria-label="Close menu" class="mb-6 lg:hidden">
+          <img src="./close-icon.svg" alt="" />
+        </button>
+      </div>
+
+      <!-- Navigation Items (used in both mobile and desktop) -->
+      <nav class="flex flex-col flex-grow justify-between">
+        <a href="/home" class="flex gap-4 text-lg p-6 hover:text-gray-400">
+          <img src="./home-icon.svg" alt="" />
+          Home</a
+        >
+        <div class="flex flex-col gap-4">
+          <a href="/login" class="auth flex gap-4 text-lg pl-6 hover:text-gray-400">
+            <img src="./profile-icon.svg" alt="" />
+            Log In / Sign Up</a
+          >
+          <p class="copywrite text-xs pl-3 pb-3">© 2024 WAYFARER - All rights reserved.</p>
+        </div>
+      </nav>
+    </div>
+    <main class="lg:pt-12">
+      <div class="absolute top-0 right-0 flex gap-3 p-4">
+        <button aria-label="Open login popup">
+          <img src="./profile-icon.svg" alt="" />
+        </button>
+        <button class="bg-[#2F8446] py-3 px-2 text-xs">ADD NEW DESTINATION</button>
+      </div>
+
+      <div class="flex flex-col gap-4 p-6">
+        <h2>ALL TRAVEL DESTINATIONS</h2>
+        <div
+          class="destinations-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4"
+        ></div>
+      </div>
+
+      <template id="destination-template">
+        <div class="flex gap-2 bg-[#242424]">
+          <img
+            class="aspect-square w-36"
+            src="./20240425_194004.jpg"
+            alt="Random destination image"
+          />
+          <div class="flex flex-col gap-4 pt-5">
+            <div>
+              <h3 class="destination-location text-sm lg:text-base">Destination, location</h3>
+            </div>
+            <div class="text-xs lg:text-sm">
+              <p class="date">Travel Date</p>
+              <p class="description">Description</p>
+            </div>
+          </div>
+        </div>
+      </template>
     </main>
     <script type="module" src="index.ts"></script>
   </body>
