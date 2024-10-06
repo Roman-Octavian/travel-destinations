@@ -9,20 +9,20 @@ let upload = multer();
 router.post('/storage/upload', upload.single('file'), async (req, res) => {
   try {
     const blob = new Blob([req.file.buffer]);
-    const url = await createBlob({
+    const upload = await createBlob({
       blob: blob,
       blobName: req.file.originalname,
       blobMimeType: req.file.mimetype,
     });
 
-    if (url == null) {
+    if (upload.status === 'error') {
       res.status(500).json({
         success: false,
-        message: `Failed to upload ${req.file.originalname}`,
+        message: upload.message,
       } satisfies UploadResponse);
+    } else {
+      res.status(201).json({ success: true, url: upload.url } satisfies UploadResponse);
     }
-
-    res.status(201).json({ success: true, url: url } satisfies UploadResponse);
   } catch (e) {
     console.error(e);
     res

@@ -1,4 +1,9 @@
-import { BlobDeleteResponse, BlobServiceClient, type ContainerClient } from '@azure/storage-blob';
+import {
+  type BlobDeleteResponse,
+  BlobServiceClient,
+  type BlockBlobUploadResponse,
+  type ContainerClient,
+} from '@azure/storage-blob';
 import path from 'path';
 import { nanoid } from 'nanoid';
 
@@ -34,60 +39,91 @@ async function getContainerClient(): Promise<ContainerClient | null> {
   }
 }
 
-/**
- * Upload a blob to the Azure Storage Account container
- *
- * Will handle name collisions gracefully
- *
- * Server-side only
- * @param obj.blob item to upload in the form of a NodeJS "Blob"
- * @param obj.blobName the name of the file being uploaded
- * @param obj.blobMimeType the type of the file, otherwise Azure will always set to `application/octet-stream`
- * @returns a public URL pointing to the upload or null in case of failure
- */
-export async function createBlob({
-  blob,
-  blobName,
-  blobMimeType,
-}: {
-  blob: Blob;
+type CreateBlobArgs = {
+  blob: Blob | Buffer;
   blobName: string;
-  blobMimeType: string;
-}): Promise<string | null> {
+  blobMimeType?: string;
+};
+
+type CreateBlobResponse =
+  | {
+      status: 'success';
+      response: BlockBlobUploadResponse;
+      name: string;
+      url: string;
+    }
+  | {
+      status: 'error';
+      message: string;
+      response?: BlockBlobUploadResponse;
+    };
+
+/**
+ * Upload a blob to an Azure Storage Account container server-side
+ *
+ * Azure overrides blobs with the same name on upload. Random characters will be added to the name
+ * of the blob to ensure no data loss occurs
+ *
+ * For that reason, you should not assume that the passed `args.blobName` will necessarily match the
+ * result; use the response `name` or `url` instead
+ * @param args.blob `Blob` or `Buffer` item to be uploaded
+ * @param args.blobName name of the blob to be uploaded including the file extension
+ * @param args.blobMimeType optional MIME type which will override the Azure default `application/octet-stream`. Not strictly required. Use this for `Buffer`; for `Blob` make sure its `type` property is defined and accurate
+ * @returns a `CreateBlobResponse` which may container either an error or a success response including the name and url of the resource
+ */
+export async function createBlob(args: CreateBlobArgs): Promise<CreateBlobResponse> {
   try {
+    const { blob, blobName, blobMimeType } = args;
+
     const containerClient = await getContainerClient();
-    if (containerClient == null) {
-      console.error(`Container not found`);
-      return null;
+    if (containerClient == null || !(await containerClient.exists())) {
+      console.error(`Failed to create container client`);
+      return {
+        status: 'error',
+        message: `Failed to create container client`,
+      };
     }
 
     let uniqueName = blobName;
-    // Azure overwrites blobs with the same name. To prevent data loss, loop until safe name is found
-    while (true) {
-      let blockBlobClient = containerClient.getBlockBlobClient(uniqueName);
-      if (await blockBlobClient.exists()) {
-        uniqueName = `${path.parse(uniqueName).name}_${nanoid(4)}${path.parse(uniqueName).ext}`;
-      } else {
-        const upload = await blockBlobClient.upload(
-          Buffer.from(await blob.arrayBuffer()),
-          blob.size,
-          {
-            blobHTTPHeaders: {
-              blobContentType: blobMimeType,
-            },
-          },
-        );
-        if (upload.etag !== null) {
-          return blockBlobClient.url;
-        } else {
-          console.error(`Upload failed: ${upload}`);
-          return null;
-        }
-      }
+    while (await containerClient.getBlockBlobClient(uniqueName).exists()) {
+      uniqueName = `${path.parse(uniqueName).name}_${nanoid(4)}${path.parse(uniqueName).ext}`;
     }
-  } catch (error) {
-    console.error(error);
-    return null;
+
+    const isBuffer = Buffer.isBuffer(blob);
+    const valueToUpload = isBuffer ? blob : Buffer.from(await blob.arrayBuffer());
+    const mimeType = blobMimeType != null ? blobMimeType : isBuffer ? null : blob.type;
+    const size = isBuffer ? blob.byteLength : blob.size;
+
+    const blockBlobClient = containerClient.getBlockBlobClient(uniqueName);
+    const upload = await blockBlobClient.upload(valueToUpload, size, {
+      ...(mimeType != null && {
+        blobHTTPHeaders: {
+          blobContentType: mimeType,
+        },
+      }),
+    });
+
+    if (upload.errorCode != null) {
+      console.error(`Upload failed: ${upload}`);
+      return {
+        status: 'error',
+        message: `Failed to upload ${uniqueName} with error code ${upload.errorCode}`,
+        response: upload,
+      };
+    }
+
+    return {
+      status: 'success',
+      response: upload,
+      name: blockBlobClient.name,
+      url: blockBlobClient.url,
+    };
+  } catch (e) {
+    console.error(e);
+    return {
+      status: 'error',
+      message: e,
+    };
   }
 }
 
@@ -103,7 +139,7 @@ export async function createBlob({
 export async function deleteBlob(blobName: string): Promise<BlobDeleteResponse | null> {
   try {
     const containerClient = await getContainerClient();
-    if (containerClient == null) {
+    if (containerClient == null || !(await containerClient.exists())) {
       console.error(`Container not found`);
       return null;
     }
