@@ -4,6 +4,7 @@ import 'dotenv/config';
 import './database/connection';
 import userRouter from './routers/userRouter';
 import destinationRouter from './routers/destinationRouter';
+import storageRouter from './routers/storageRouter';
 
 const app = express();
 
@@ -18,6 +19,7 @@ const VERSIONED_API_PATH = '/api/v1';
 
 app.use(VERSIONED_API_PATH, userRouter);
 app.use(VERSIONED_API_PATH, destinationRouter);
+app.use(VERSIONED_API_PATH, storageRouter);
 
 const PORT = process.env.PORT ?? 8080;
 
