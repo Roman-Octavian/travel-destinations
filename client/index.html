@@ -61,18 +61,24 @@
       </div>
 
       <template id="destination-template">
-        <div class="flex gap-2 bg-[#242424]">
+        <div class="flex bg-[#242424]">
           <img
             class="aspect-square w-36"
             src="./20240425_194004.jpg"
             alt="Random destination image"
           />
-          <div class="flex flex-col gap-4 pt-5">
+          <div class="flex flex-col gap-4 py-5 w-full px-3">
             <div>
-              <h3 class="destination-location text-sm lg:text-base">Destination, location</h3>
+              <h3 class="destination-location text-sm flex gap-2 lg:text-base">
+                <img src="./location-icon.svg" alt="" />
+                Destination, location
+              </h3>
             </div>
-            <div class="text-xs lg:text-sm">
-              <p class="date">Travel Date</p>
+            <div class="text-xs flex flex-col gap-2 lg:text-sm">
+              <p class="date flex gap-2">
+                <img src="./date-icon.svg" alt="" />
+                Travel Date
+              </p>
               <p class="description">Description</p>
             </div>
           </div>
