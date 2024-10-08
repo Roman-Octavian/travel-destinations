@@ -23,7 +23,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
     };
 
     const accessToken = jwt.sign(payLoad, process.env.JWT_ACCESS_SECRET, {
-      expiresIn: `${process.env.JWT_ACCESS_LIFESPAN}s`,
+      expiresIn: `${process.env.JWT_ACCESS_LIFESPAN}m`,
     });
     const refreshToken = jwt.sign(payLoad, process.env.JWT_REFRESH_SECRET, {
       expiresIn: `${process.env.JWT_REFRESH_LIFESPAN}d`,

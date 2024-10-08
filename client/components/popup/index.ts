@@ -19,6 +19,7 @@ const popup = () => {
   const nameField = document.getElementById('nameField') as HTMLElement;
   const toggleForm = document.getElementById('toggleForm') as HTMLElement;
   const closeModal = document.getElementById('closeModal') as HTMLElement;
+  const toggleText = document.getElementById('toggleText') as HTMLElement;
 
   let isLogin = true; // Track if we're in login or sign-up mode
 
@@ -39,11 +40,13 @@ const popup = () => {
       loginBtn.innerText = 'Login';
       toggleForm.innerHTML = 'SIGN UP HERE';
       nameField.classList.add('hidden');
+      toggleText.innerText = 'DON’T HAVE AN ACCOUNT?';
     } else {
       modalTitle.innerText = 'SIGN UP';
       loginBtn.innerText = 'Sign Up';
       toggleForm.innerHTML = 'LOG IN HERE';
       nameField.classList.remove('hidden');
+      toggleText.innerText = 'ALREADY HAVE AN ACCOUNT?';
     }
   };
 
