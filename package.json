@@ -4,13 +4,15 @@
   "description": "Mandatory random group travel destinations hand-in",
   "workspaces": [
     "client",
-    "server"
+    "server",
+    "packages/*"
   ],
   "scripts": {
     "database:init": "npm run database:init -w server",
     "dev": "concurrently -r \"npm run dev -w server\" \"npm run dev -w client\"",
     "format": "npx prettier . --write",
-    "prepare": "husky"
+    "prepare": "husky",
+    "azure:deploy-storage": "cross-env ./infrastructure/storage/deploy-storage.sh"
   },
   "contributors": [
     "Nikolett Dékány (https://github.com/nikidkny)",
@@ -22,6 +24,7 @@
   "devDependencies": {
     "axios": "^1.7.7",
     "concurrently": "^9.0.1",
+    "cross-env": "^7.0.3",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "prettier": "3.3.3"

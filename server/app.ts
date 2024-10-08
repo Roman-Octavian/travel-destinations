@@ -5,6 +5,7 @@ import 'dotenv/config';
 import './database/connection';
 import userRouter from './routers/userRouter';
 import destinationRouter from './routers/destinationRouter';
+import storageRouter from './routers/storageRouter';
 import authRouter from './routers/authRouter';
 import { errorHandler } from './utils/utils';
 
@@ -24,6 +25,7 @@ const VERSIONED_API_PATH = '/api/v1';
 app.use(VERSIONED_API_PATH + '/auth', authRouter);
 app.use(VERSIONED_API_PATH, userRouter);
 app.use(VERSIONED_API_PATH, destinationRouter);
+app.use(VERSIONED_API_PATH, storageRouter);
 
 app.use(errorHandler);
 
