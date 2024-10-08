@@ -3,17 +3,139 @@
   <head>
     <meta charset="UTF-8" />
     <meta property="og:title" content="Travel Destinations" />
-    <meta name="viewport" content="width=device-width, inital-scale=1.0" />
-    <meta property="og:type" content="website" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:type" content="website" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <title>Travel Destinations</title>
   </head>
   <body>
-    <main class="h-[100vh] flex justify-center items-center">
-      <h1 id="h1" class="flex text-white xs:text-4xl sm:text-7xl md:text-9xl left-eye"></h1>
+    <main class="h-[100vh] flex flex-col justify-between items-center py-12 pr-24">
+      <div class="w-full flex justify-end p-4">
+        <button
+          id="create-btn"
+          class="bg-pm-green hover:bg-green-600 text-white font-bold py-4 px-6"
+        >
+          ADD NEW DESTINATION
+        </button>
+      </div>
+      <div
+        id="destinationModal"
+        class="hidden fixed inset-0 bg-black bg-opacity-20 flex justify-center items-center"
+        aria-hidden="true"
+        role="dialog"
+        aria-labelledby="modalTitle"
+      >
+        <div class="bg-dark-grey text-white w-full max-w-xl p-16 relative">
+          <h2 id="modalTitle" class="text-2xl font-bold mb-8 text-center">NEW DESTINATION</h2>
+
+          <button
+            id="closeModalBtn"
+            class="absolute top-2 right-4 text-2xl"
+            aria-label="Close modal"
+          >
+            &times;
+          </button>
+
+          <form id="destinationForm">
+            <div class="flex space-x-4 mb-6">
+              <div class="flex-1">
+                <label for="country" class="block text-sm text-white uppercase">COUNTRY</label>
+                <select
+                  id="country"
+                  class="w-full h-12 p-2 border-b border-gray-500 bg-transparent text-white focus:outline-none"
+                  required
+                >
+                  <option value="" class="text-gray-500" disabled selected hidden>
+                    Select Country
+                  </option>
+                </select>
+              </div>
+              <div class="flex-1">
+                <label for="location" class="block text-sm text-white uppercase">LOCATION</label>
+                <input
+                  type="text"
+                  id="location"
+                  class="w-full h-12 p-2 border-b border-gray-500 bg-transparent focus:outline-none text-white"
+                  required
+                />
+              </div>
+            </div>
+            <div class="mb-6">
+              <label for="description" class="block text-sm text-white uppercase"
+                >DESCRIPTION</label
+              >
+              <textarea
+                id="description"
+                rows="1"
+                class="w-full p-2 border-b border-gray-500 bg-transparent focus:outline-none text-white overflow-hidden"
+                style="resize: none"
+                required
+              ></textarea>
+            </div>
+            <div class="flex space-x-4 mb-6">
+              <div class="relative flex-grow mb-6">
+                <label for="datepicker-start" class="block text-sm text-white uppercase mb-3"
+                  >START DATE</label
+                >
+                <div class="absolute top-11 left-0 flex items-center">
+                  <img
+                    src="/calendar.svg"
+                    alt="Calendar Icon"
+                    class="w-5 h-5 cursor-pointer text-gray-400"
+                    id="calendar-icon-start"
+                  />
+                </div>
+                <input
+                  type="date"
+                  id="datepicker-start"
+                  class="w-full pl-10 p-2 border-b border-gray-500 bg-transparent text-gray-400 focus:outline-none appearance-none placeholder-gray-400"
+                  required
+                />
+              </div>
+              <div class="relative flex-grow mb-6">
+                <label for="datepicker-end" class="block text-sm text-white uppercase mb-3"
+                  >END DATE</label
+                >
+                <div class="absolute top-11 left-0 flex items-center">
+                  <img
+                    src="/calendar.svg"
+                    alt="Calendar Icon"
+                    class="w-5 h-5 cursor-pointer text-gray-400"
+                    id="calendar-icon-end"
+                  />
+                </div>
+                <input
+                  type="date"
+                  id="datepicker-end"
+                  class="w-full pl-10 p-2 border-b border-gray-500 bg-transparent text-gray-400 focus:outline-none appearance-none placeholder-gray-400"
+                  required
+                />
+              </div>
+            </div>
+            <div class="mb-6">
+              <label for="image-upload" class="block text-sm text-white uppercase"
+                >UPLOAD IMAGE</label
+              >
+              <input
+                type="file"
+                id="image-upload"
+                class="w-full text-gray-400 p-2 border-b border-gray-500 bg-transparent focus:outline-none"
+              />
+            </div>
+            <div class="flex justify-center">
+              <button
+                type="submit"
+                class="bg-pm-green hover:bg-green-600 text-white font-bold py-4 px-6 mt-4"
+              >
+                ADD NEW DESTINATION
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </main>
     <script type="module" src="index.ts"></script>
+    <script type="module" src="modal.ts"></script>
   </body>
 </html>

@@ -16,3 +16,7 @@ html {
   scroll-behavior: smooth;
   background: #404040;
 }
+
+input[type='date']::-webkit-calendar-picker-indicator {
+  display: none;
+}
