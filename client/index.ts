@@ -1,3 +1,5 @@
+import popup from './components/popup';
+
 // Get the menu elements
 const menuButton = document.getElementById('burger-menu') as HTMLElement;
 const closeMenuButton = document.getElementById('closeMenuButton') as HTMLElement;
@@ -71,3 +73,5 @@ function populateDestinations(destinations: any[]) {
 
 // Call the function to fetch and display destinations
 fetchDestinations();
+
+popup();
