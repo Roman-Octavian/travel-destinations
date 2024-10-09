@@ -82,4 +82,8 @@ router.get('/refresh', authenticator, (req: Request, res: Response): void => {
   res.json('refresh token confirmed and sent');
 });
 
+router.get('/status', authenticator, (req: Request, res: Response) => {
+  res.status(200).json({ authenticated: true });
+});
+
 export default router;

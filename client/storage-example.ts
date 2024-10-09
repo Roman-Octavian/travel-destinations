@@ -1,4 +1,7 @@
 import { uploadImage, deleteImage } from './storage';
+import { checkAuth } from './utils/authCheck.ts';
+
+await checkAuth();
 
 const filepicker = document.getElementById('file') as HTMLInputElement;
 const submit = document.getElementById('submit') as HTMLButtonElement;
