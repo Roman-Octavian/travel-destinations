@@ -2,9 +2,11 @@ import { Router } from 'express';
 import multer from 'multer';
 import { createBlob, deleteBlob } from '../storage/client';
 import { type UploadResponse, type DeleteResponse } from '@packages/types';
+import { authenticator } from '../utils/auth';
 
 const router = Router();
 let upload = multer();
+router.use(authenticator);
 
 router.post('/storage/upload', upload.single('file'), async (req, res) => {
   try {
