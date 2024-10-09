@@ -43,7 +43,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
       sameSite: 'none',
     });
 
-    res.json({ message: 'success', username: username });
+    res.json({ message: 'successfully logged in', username: username });
   } else {
     res.status(404);
     res.json({ message: 'incorrect password' });
@@ -62,7 +62,9 @@ router.post('/signup', async (req, res) => {
     const user = new User({ ...req.body, password: hashedPassword });
     await user.save();
 
-    res.status(200).json({ message: 'success', username: username });
+    res
+      .status(200)
+      .json({ message: 'successfully signed up. You may log in now.', username: username });
     return;
   }
 });
