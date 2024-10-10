@@ -1,5 +1,6 @@
 import { connection as mongo } from '../connection';
-import { User, Destination, type DestinationType } from '../schema';
+import { User, Destination } from '../schema';
+import { Destination as DestinationType } from '@packages/types';
 import bcrypt from 'bcrypt';
 
 await User.deleteMany({});
@@ -9,16 +10,13 @@ const now = new Date();
 const nextMonth = new Date();
 nextMonth.setMonth(now.getMonth() + 1);
 
-const defaultImage =
-  'https://tempdevstorageaccount.blob.core.windows.net/container/placeholder-img.png';
-
 const DESTINATIONS: DestinationType[] = [
   {
     location: '1111 Avenue',
     country: 'Barbados',
     date_start: now,
     date_end: nextMonth,
-    image: defaultImage,
+    image: './placeholder-img.png',
     description: 'The 1111th Avenue',
     user_id: 'admin',
   },
@@ -27,7 +25,7 @@ const DESTINATIONS: DestinationType[] = [
     country: 'Denmark',
     date_start: now,
     date_end: nextMonth,
-    image: defaultImage,
+    image: './placeholder-img.png',
     description: 'The capital city of Denmark',
     user_id: 'admin',
   },
@@ -36,7 +34,7 @@ const DESTINATIONS: DestinationType[] = [
     country: 'Afghanistan',
     date_start: now,
     date_end: nextMonth,
-    image: defaultImage,
+    image: './placeholder-img.png',
     description: 'From where three-letter agencies source raw material for the opioid crisis',
     user_id: 'admin',
   },

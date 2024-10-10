@@ -1,15 +1,10 @@
+import { destinationModal } from './components/destinationmodal/index';
 import popup from './components/popup';
 import { axiosInstance, axiosLoginInstance } from '../client/utils/axiosConfig.ts';
+import { type Destination as DestinationType } from '@packages/types';
 
 // Destination interface
-interface Destination {
-  _id: string;
-  country: string;
-  location: string;
-  date_start: string;
-  date_end: string;
-  description: string;
-}
+type Destination = DestinationType & { _id: string };
 
 // Get elements from the DOM
 const menuButton = document.getElementById('burger-menu') as HTMLElement;
@@ -66,7 +61,11 @@ const populateDestinations = (destinations: Destination[], isUserSpecific: boole
     const descriptionElement = clone.querySelector('.description');
     const deleteButton = clone.querySelector('.delete-button') as HTMLElement;
     const destinationIDDataset = clone.querySelector('.template-wrapper') as HTMLElement;
+    const imageElement = clone.querySelector('.image') as HTMLImageElement;
 
+    if (imageElement) {
+      imageElement.src = destination.image;
+    }
     // Add ids to each destination
     if (destinationIDDataset) {
       destinationIDDataset.dataset.id = destination._id;
@@ -190,4 +189,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateAuthButtons();
 });
 
+destinationModal();
 popup();
