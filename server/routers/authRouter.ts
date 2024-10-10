@@ -33,6 +33,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
       httpOnly: true,
       secure: true,
       sameSite: 'lax',
+      path: '/api/v1/auth/refresh',
       maxAge: Number(process.env.JWT_REFRESH_LIFESPAN) * 24 * 60 * 60 * 1000,
     });
     res.cookie('accessToken', accessToken, {
