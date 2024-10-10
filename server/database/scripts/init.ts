@@ -10,7 +10,7 @@ const nextMonth = new Date();
 nextMonth.setMonth(now.getMonth() + 1);
 
 const defaultImage =
-  'https://tempdevstorageaccount.blob.core.windows.net/container/20240425_194004.jpg';
+  'https://tempdevstorageaccount.blob.core.windows.net/container/placeholder-img.png';
 
 const DESTINATIONS: DestinationType[] = [
   {

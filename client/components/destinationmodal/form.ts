@@ -33,6 +33,7 @@ export const resetForm = () => {
 
 export const populateForm = async (destinationId: string) => {
   try {
+    console.log(destinationId);
     const destination = await getDestinationById(destinationId);
 
     if (destination) {

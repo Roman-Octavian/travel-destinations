@@ -20,3 +20,41 @@ html {
 input[type='date']::-webkit-calendar-picker-indicator {
   display: none;
 }
+
+.logo-container {
+  position: relative;
+}
+
+.logo-container::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 4px;
+  width: 100%;
+  height: 2px;
+  background-color: #38a169;
+}
+
+.copywrite {
+  position: relative;
+}
+
+.copywrite::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -8px;
+  width: 100%;
+  height: 2px;
+  background-color: #38a169;
+}
+
+@media (min-width: 990px) {
+  .logo-container::after {
+    bottom: -8px;
+  }
+
+  .copywrite::before {
+    top: -12px;
+  }
+}
