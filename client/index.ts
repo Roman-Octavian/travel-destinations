@@ -1,6 +1,5 @@
 import popup from './components/popup';
-import { axiosInstance } from '../client/utils/axiosConfig.ts';
-import axios from 'axios';
+import { axiosInstance, axiosLoginInstance } from '../client/utils/axiosConfig.ts';
 
 // Destination interface
 interface Destination {
@@ -125,47 +124,65 @@ const deleteDestination = async (destinationId: string) => {
     console.error('Error deleting destination:', error);
   }
 };
-// Check if the user is logged in by making a request to the server
-const checkUserLoggedIn = async (): Promise<boolean> => {
-  try {
-    const response = await axiosInstance.get('/auth/status');
-    return response.data.authenticated;
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.status === 401) {
-      console.error('User is not logged in:', error);
-      return false;
-    }
-    console.error('An unexpected error occurred:', error);
-    return false;
-  }
+
+// Check if user is logged in based on 'isLoggedIn' in local storage
+const checkUserLoggedIn = () => {
+  return localStorage.getItem('isLoggedIn') === 'true';
 };
 
 // Function to refresh both user-specific and all destinations
 const refreshDestinations = async () => {
   await fetchAndPopulateDestinations('/destination'); // Fetch all destinations
 
-  const loggedIn = await checkUserLoggedIn();
+  const loggedIn = checkUserLoggedIn();
   if (loggedIn) {
     await fetchAndPopulateDestinations('/destination/user', true); // Fetch user-specific destinations
   }
 };
 
-// Initialize the page
-document.addEventListener('DOMContentLoaded', async () => {
-  await refreshDestinations(); // This will fetch both destination lists on load
+// Function to update UI based on login status
+const updateAuthButtons = () => {
+  const loggedIn = checkUserLoggedIn();
 
-  const loggedIn = await checkUserLoggedIn();
   if (loggedIn) {
     userDestinations.style.display = 'flex';
     authButton.classList.add('hidden');
+    authButton.style.display = 'none'; // Hide auth button
     logoutButton.classList.remove('hidden');
-    logoutButton.style.display = 'flex';
+    logoutButton.style.display = 'flex'; // Show logout button
   } else {
     userDestinations.style.display = 'none';
     authButton.classList.remove('hidden');
-    authButton.style.display = 'flex';
+    authButton.style.display = 'flex'; // Show auth button
     logoutButton.classList.add('hidden');
+    logoutButton.style.display = 'none'; // Hide logout button
   }
+};
+
+logoutButton.addEventListener('click', async () => {
+  try {
+    const result = await axiosLoginInstance.get('/logout');
+
+    if (result.data.isLoggedIn === false) {
+      // Set isLoggedIn to false in localStorage after logout
+      localStorage.setItem('isLoggedIn', 'false');
+      alert('Successfully logged out');
+
+      // Update UI to reflect logged-out status, e.g., show login button
+    }
+  } catch (error) {
+    alert('Logout failed. Please try again.');
+  }
+});
+
+// Initialize the page
+document.addEventListener('DOMContentLoaded', async () => {
+  // Check if user is logged in
+  checkUserLoggedIn();
+  // Fetch both destination lists on load
+  await refreshDestinations();
+  // Update buttons based on login status
+  updateAuthButtons();
 });
 
 popup();

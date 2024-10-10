@@ -43,7 +43,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
       sameSite: 'lax',
     });
 
-    res.json({ message: 'successfully logged in', username: username });
+    res.json({ message: 'successfully logged in', username: username, isLoggedIn: true });
   } else {
     res.status(404);
     res.json({ message: 'incorrect password' });
@@ -62,17 +62,18 @@ router.post('/signup', async (req, res) => {
     const user = new User({ ...req.body, password: hashedPassword });
     await user.save();
 
-    res
-      .status(200)
-      .json({ message: 'successfully signed up. You may log in now.', username: username });
-    return;
+    res.status(200).json({
+      message: 'successfully signed up. You may log in now.',
+      username: username,
+      isLoggedIn: false, // not logged in yet, just signed up
+    });
   }
 });
 
 router.get('/logout', (req: Request, res: Response): void => {
   res.clearCookie('accessToken');
   res.clearCookie('refreshToken');
-  res.json('successfully logged out');
+  res.json({ message: 'successfully logged out', isLoggedIn: false });
 });
 
 router.get('/refresh', authenticator, (req: Request, res: Response): void => {
