@@ -117,11 +117,13 @@ router.delete('/:id', authenticator, async (req, res) => {
   try {
     const destinationId = req.params.id;
     console.log('Destination ID:', destinationId);
-    const userId = res.locals.userInfo.id;
+
+    // Convert the userId to a MongoDB ObjectId using the 'new' keyword
+    const userId = new mongoose.Types.ObjectId(res.locals.userInfo.id);
     console.log('User ID:', userId);
 
-    // Query the destination by ID and userId
-    const destination = await Destination.findOne({ _id: destinationId, userId });
+    // Query the destination by _id and user_id
+    const destination = await Destination.findOne({ _id: destinationId, user_id: userId });
 
     if (!destination) {
       res.status(404).json({ message: 'Destination not found' });
