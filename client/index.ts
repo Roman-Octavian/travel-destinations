@@ -4,7 +4,7 @@ import { axiosInstance, axiosLoginInstance } from '../client/utils/axiosConfig.t
 // Destination interface
 interface Destination {
   _id: string;
-  title: string;
+  country: string;
   location: string;
   date_start: string;
   date_end: string;
@@ -74,7 +74,7 @@ const populateDestinations = (destinations: Destination[], isUserSpecific: boole
 
     // Populate with data
     if (locationElement) {
-      locationElement.textContent = `${destination.title}, ${destination.location}`;
+      locationElement.textContent = `${destination.country}, ${destination.location}`;
     }
 
     // Use date_start and date_end
