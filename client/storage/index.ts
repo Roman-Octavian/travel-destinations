@@ -14,6 +14,7 @@ export async function uploadImage(file: File): Promise<UploadResponse> {
 
     const response = await fetch('http://localhost:8080/api/v1/storage/upload', {
       method: 'POST',
+      credentials: 'include',
       body: formData,
     });
 
@@ -44,6 +45,7 @@ export async function deleteImage(imageName: string): Promise<DeleteResponse> {
   try {
     const response = await fetch('http://localhost:8080/api/v1/storage/delete', {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },

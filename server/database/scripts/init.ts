@@ -1,5 +1,6 @@
 import { connection as mongo } from '../connection';
 import { User, Destination, type DestinationType } from '../schema';
+import bcrypt from 'bcrypt';
 
 await User.deleteMany({});
 await Destination.deleteMany({});
@@ -38,7 +39,12 @@ const DESTINATIONS: DestinationType[] = [
   },
 ];
 
-await new User({ name: 'admin', username: 'admin', password: 'admin' }).save();
+await new User({
+  name: 'admin',
+  username: 'admin',
+  password: await bcrypt.hash('admin', 10),
+}).save();
+
 await Destination.insertMany(DESTINATIONS);
 
 await mongo.connection.close();

@@ -30,17 +30,16 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
     });
 
     res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      path: '/api/v1/auth/refresh',
+      httpOnly: false,
+      secure: false,
+      sameSite: 'lax',
       maxAge: Number(process.env.JWT_REFRESH_LIFESPAN) * 24 * 60 * 60 * 1000,
     });
     res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: true,
+      httpOnly: false,
+      secure: false,
       maxAge: Number(process.env.JWT_ACCESS_LIFESPAN) * 60 * 1000,
-      sameSite: 'none',
+      sameSite: 'lax',
     });
 
     res.json({ message: 'successfully logged in', username: username });
