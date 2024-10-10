@@ -13,7 +13,7 @@ router.get('/', async (_req, res) => {
   }
 });
 
-router.get('/destination/:id', authenticator, async (req, res) => {
+router.get('/:id', authenticator, async (req, res) => {
   try {
     const destination = await Destination.findById(req.params.id);
 
@@ -33,7 +33,7 @@ router.get('/destination/:id', authenticator, async (req, res) => {
   }
 });
 
-router.post('/destination', authenticator, async (req, res) => {
+router.post('/', authenticator, async (req, res) => {
   try {
     const { location, country, description, date_start, date_end, image } = req.body;
 
@@ -71,7 +71,7 @@ router.post('/destination', authenticator, async (req, res) => {
   }
 });
 
-router.patch('/destination/:id', authenticator, async (req, res) => {
+router.patch('/:id', authenticator, async (req, res) => {
   try {
     const username = res.locals.userInfo?.username;
     if (!username) {

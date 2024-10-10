@@ -1,6 +1,6 @@
 import { axiosInstance } from './axiosConfig.ts';
 
-export const checkAuth = async () => {
+export const checkAuth = async (): Promise<boolean> => {
   try {
     const response = await axiosInstance.get('/auth/status');
 
@@ -8,9 +8,12 @@ export const checkAuth = async () => {
       // Redirect to login page if not authenticated
       window.location.href = '/login.html';
     }
+    return true;
   } catch (error) {
+    alert('Authentication Error: You need to log in to access this feature');
     console.error('Error checking authentication status:', error);
     // Redirect to login on error as a fallback
     window.location.href = '/index.html';
+    return false;
   }
 };

@@ -1,10 +1,12 @@
 import HTML from './index.html?raw';
 import { resetForm, populateForm, populateCountryDropdown, handleFormSubmission } from './form';
+import { checkAuth } from '../../utils/authCheck.ts';
 
 let isCreateMode = true;
 let currentDestinationId: string | null = null;
 
 export const showModal = (title: string) => {
+  if (!checkAuth()) return;
   const modal = document.getElementById('destinationModal') as HTMLElement;
   const modalTitle = document.getElementById('modalTitle') as HTMLElement;
   const submitButton = document.querySelector(

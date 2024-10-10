@@ -5,7 +5,6 @@ import 'dotenv/config';
 import './database/connection';
 import userRouter from './routers/userRouter';
 import destinationRouter from './routers/destinationRouter';
-import countryRouter from './routers/countryRouter';
 import storageRouter from './routers/storageRouter';
 import authRouter from './routers/authRouter';
 import { errorHandler } from './utils/utils';
@@ -27,7 +26,6 @@ app.use(VERSIONED_API_PATH + '/auth', authRouter);
 app.use(VERSIONED_API_PATH + '/user', userRouter);
 app.use(VERSIONED_API_PATH + '/storage', storageRouter);
 app.use(VERSIONED_API_PATH + '/destination', destinationRouter);
-app.use(VERSIONED_API_PATH, countryRouter);
 
 app.use(errorHandler);
 

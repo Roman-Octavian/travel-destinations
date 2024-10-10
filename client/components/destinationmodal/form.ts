@@ -1,4 +1,3 @@
-import { fetchCountries } from '../../service/countryApi';
 import {
   getDestinationById,
   createDestination,
@@ -7,6 +6,7 @@ import {
 import { uploadImage } from '../../storage';
 import { hideModal, isCreateMode, currentDestinationId } from './index';
 import { showPopup, initializePopup } from '../customAlert';
+import { countries } from '@packages/types/countriesList.ts';
 
 interface FormData {
   location: string;
@@ -109,8 +109,6 @@ export const formatDateForInput = (isoDate: string): string => {
 export const populateCountryDropdown = async () => {
   const countrySelect = document.getElementById('country') as HTMLSelectElement;
   try {
-    const countries = await fetchCountries();
-
     countries.forEach((country) => {
       const option = document.createElement('option');
       option.value = country;

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { type Country } from './types';
+import { Country } from '@packages/types/country';
 
 export type DestinationType = {
   location: string;

@@ -1,3 +1,5 @@
+import { axiosInstance } from '../utils/axiosConfig.ts';
+
 interface Destination {
   location: string;
   country: string;
@@ -12,29 +14,26 @@ interface ApiResponse {
   message: string;
 }
 
+// Function to create a destination
 export async function createDestination(destination: Destination): Promise<ApiResponse> {
   try {
-    const response = await fetch('http://localhost:8080/api/v1/destination', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(destination),
-    });
+    const response = await axiosInstance.post('/destination', destination);
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      if (response.status === 401) {
-        return { success: false, message: 'Unauthorized: Please log in' };
-      }
-      return { success: false, message: errorData.message || 'Failed to create destination' };
+    return {
+      success: true,
+      message: response.data.message,
+    };
+  } catch (error: any) {
+    console.error('Error creating destination:', error);
+
+    if (error.response && error.response.status === 401) {
+      return { success: false, message: 'Unauthorized: Please log in' };
     }
 
-    return await response.json();
-  } catch (e) {
-    console.error(e);
-    return { success: false, message: String(e) };
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Failed to create destination',
+    };
   }
 }
 
@@ -43,44 +42,34 @@ export async function updateDestination(
   updatedData: Partial<Destination>,
 ): Promise<ApiResponse> {
   try {
-    const response = await fetch(`http://localhost:8080/api/v1/destination/${destinationId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(updatedData),
-    });
+    const response = await axiosInstance.patch(`/destination/${destinationId}`, updatedData);
 
-    const responseData = await response.json();
+    return {
+      success: response.data.success,
+      message: response.data.message,
+    };
+  } catch (error: any) {
+    console.error('Error updating destination:', error);
 
-    if (!response.ok || !responseData.success) {
-      return { success: false, message: responseData.message || 'Failed to update destination' };
-    }
-
-    return { success: true, message: responseData.message };
-  } catch (e) {
-    console.error(e);
-    return { success: false, message: String(e) };
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Failed to update destination',
+    };
   }
 }
 
 export async function getDestinationById(destinationId: string): Promise<Destination | null> {
   try {
-    const response = await fetch(`http://localhost:8080/api/v1/destination/${destinationId}`, {
-      credentials: 'include',
-    });
+    const response = await axiosInstance.get(`/destination/${destinationId}`);
 
-    const responseData = await response.json();
-
-    if (!response.ok || !responseData.success) {
-      console.error(responseData.message);
+    if (response.data.success) {
+      return response.data.data;
+    } else {
+      console.error(response.data.message);
       return null;
     }
-
-    return responseData.data;
-  } catch (e) {
-    console.error(e);
+  } catch (error: any) {
+    console.error('Error fetching destination:', error);
     return null;
   }
 }
