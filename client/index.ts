@@ -17,6 +17,7 @@ const menuButton = document.getElementById('burger-menu') as HTMLElement;
 const closeMenuButton = document.getElementById('closeMenuButton') as HTMLElement;
 const navMenu = document.getElementById('navMenu') as HTMLElement;
 const authButton = document.getElementById('openModal') as HTMLElement;
+const logoutButton = document.getElementById('logoutButton') as HTMLElement;
 const userDestinations = document.getElementById('my-destinations') as HTMLElement;
 
 // Mobile menu
@@ -156,11 +157,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   const loggedIn = await checkUserLoggedIn();
   if (loggedIn) {
     userDestinations.style.display = 'flex';
-    authButton.innerHTML = '<img src="./profile-icon.svg" alt="" /> Log Out';
+    authButton.classList.add('hidden');
+    logoutButton.classList.remove('hidden');
+    logoutButton.style.display = 'flex';
   } else {
     userDestinations.style.display = 'none';
-    console.log('User is not logged in, skipping user-specific destinations fetch.');
-    authButton.innerHTML = '<img src="./profile-icon.svg" alt="" /> Log In / Sign Up';
+    authButton.classList.remove('hidden');
+    authButton.style.display = 'flex';
+    logoutButton.classList.add('hidden');
   }
 });
 
