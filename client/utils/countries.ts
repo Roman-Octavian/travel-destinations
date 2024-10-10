@@ -1,5 +1,6 @@
-import { Country } from './country';
-export const countries: Country[] = [
+import { Country } from '@packages/types';
+
+export const COUNTRIES: Country[] = [
   'Afghanistan',
   'Albania',
   'Algeria',
