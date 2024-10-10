@@ -230,6 +230,7 @@ const popup = () => {
 
       alert(result.data.message); // Show success message
       if (isLogin) {
+        localStorage.setItem('isLoggedIn', 'true');
         hideModal();
       } else {
         toggleFormFunction();
