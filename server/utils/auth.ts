@@ -53,5 +53,4 @@ export const authenticator = (req: Request, res: Response, next: NextFunction): 
 
   // If no valid access token or refresh token, reject the request
   res.status(401).json('UNAUTHORIZED REQUEST - NO TOKEN');
-  return;
 };

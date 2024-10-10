@@ -54,6 +54,13 @@ const populateDestinations = (destinations: Destination[], isUserSpecific: boole
     destinationList.innerHTML = ''; // Clear existing destinations
   }
 
+  if (destinations.length === 0 && isUserSpecific) {
+    const noDestinationsMessage = document.createElement('p');
+    noDestinationsMessage.textContent = 'You have no destinations yet.';
+    destinationList?.appendChild(noDestinationsMessage);
+    return;
+  }
+
   destinations.forEach((destination) => {
     const clone = template.content.cloneNode(true) as HTMLElement;
     const locationElement = clone.querySelector('.destination-location span');

@@ -20,6 +20,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
   if (user && (await bcrypt.compare(password, user.password))) {
     const payLoad = {
       username: user.username,
+      id: user._id,
     };
 
     const accessToken = jwt.sign(payLoad, process.env.JWT_ACCESS_SECRET, {

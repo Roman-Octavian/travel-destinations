@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { Destination, User } from '../database';
 import { authenticator } from '../utils/auth';
+import mongoose from 'mongoose';
 
 const router = Router();
 
@@ -15,6 +16,7 @@ router.get('/', async (_req, res) => {
   }
 });
 
+// route to post a destination
 router.post('/', authenticator, async (req, res) => {
   try {
     const { location, country, description, date_start, date_end, image } = req.body;
@@ -53,6 +55,7 @@ router.post('/', authenticator, async (req, res) => {
   }
 });
 
+// Route to update a destination
 router.patch('/:id', authenticator, async (req, res) => {
   try {
     const username = res.locals.userInfo?.username;
@@ -96,11 +99,12 @@ router.patch('/:id', authenticator, async (req, res) => {
 // Route to get destinations of the logged-in user (authentication required)
 router.get('/user', authenticator, async (req, res) => {
   try {
-    const userId = res.locals.userInfo.id;
+    const username = res.locals.userInfo?.username;
+    const user = await User.findOne({ username }).select('_id');
+    const userId = new mongoose.Types.ObjectId(user._id);
+    console.log('Fetching destinations for user:', userId); // Log the user ID
 
-    // Query destinations that belong to the logged-in user
-    const userDestinations = await Destination.find({ userId });
-
+    const userDestinations = await Destination.find({ user_id: userId });
     res.status(200).json(userDestinations);
   } catch (e) {
     console.error(e);
