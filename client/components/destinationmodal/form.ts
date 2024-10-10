@@ -7,6 +7,7 @@ import { uploadImage } from '../../storage';
 import { hideModal, isCreateMode, currentDestinationId } from './index';
 import { showPopup, initializePopup } from '../customAlert';
 import { COUNTRIES } from '../../utils/countries';
+import { refreshDestinations } from '../../utils/populate';
 
 interface FormData {
   location: string;
@@ -150,7 +151,7 @@ export const handleFormSubmission = async (e: Event) => {
     return;
   }
 
-  let imageUrl = '';
+  let imageUrl = './placeholder-img.png';
 
   if (image) {
     try {
@@ -197,6 +198,8 @@ export const handleFormSubmission = async (e: Event) => {
       );
       (e.target as HTMLFormElement).reset();
       hideModal();
+
+      await refreshDestinations();
     } else {
       showPopup('Error', 'Failed to save destination: ' + response?.message, 'error');
     }
