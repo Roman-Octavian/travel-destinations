@@ -48,43 +48,45 @@
         </div>
       </nav>
     </div>
-    <main class="lg:pt-12">
-      <div class="absolute top-0 right-0 flex gap-3 p-4">
+    <main class="lg:pt-12 overflow-y-scroll">
+      <div class="absolute top-0 right-5 flex gap-3 p-4">
         <button id="create-btn" class="bg-[#2F8446] py-3 px-2 text-xs">ADD NEW DESTINATION</button>
       </div>
 
       <div id="my-destinations" class="my-destinations hidden flex-col gap-4 p-6">
         <h2>MY TRAVEL DESTINATIONS</h2>
-        <div class="mydestinations-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        <div class="mydestinations-list grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
       </div>
 
       <div class="flex flex-col gap-4 p-6">
         <h2>ALL TRAVEL DESTINATIONS</h2>
-        <div class="destinations-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        <div class="destinations-list grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
       </div>
 
       <template id="destination-template">
         <div id="" class="template-wrapper flex bg-[#242424]" data-id="">
-          <img
-            class="image aspect-square w-36"
-            src="./placeholder-img.png"
-            alt="Random destination image"
-          />
-          <div class="flex flex-col justify-around gap-4 py-5 w-full px-3">
-            <div>
-              <h3 class="destination-location text-sm flex gap-2 lg:text-base">
-                <img src="./location-icon.svg" alt="" />
-                <span>Destination, location</span>
-              </h3>
+          <div class="flex flex-row flex-grow">
+            <img
+              class="image aspect-square w-36 flex-grow object-cover"
+              src="./placeholder-img.png"
+              alt="Random destination image"
+            />
+            <div class="flex flex-col justify-around gap-4 py-5 w-full px-3">
+              <div>
+                <h3 class="destination-location text-sm flex gap-2 lg:text-base">
+                  <img src="./location-icon.svg" alt="" />
+                  <span>Destination, location</span>
+                </h3>
+              </div>
+              <div class="text-xs flex flex-col gap-2 lg:text-sm">
+                <p class="date flex gap-2">
+                  <img src="./date-icon.svg" alt="" />
+                  <span>Travel Date</span>
+                </p>
+                <p class="description">Description</p>
+              </div>
+              <button class="delete-button bg-[#2F8446]">Delete</button>
             </div>
-            <div class="text-xs flex flex-col gap-2 lg:text-sm">
-              <p class="date flex gap-2">
-                <img src="./date-icon.svg" alt="" />
-                <span>Travel Date</span>
-              </p>
-              <p class="description">Description</p>
-            </div>
-            <button class="delete-button bg-[#2F8446]">Delete</button>
           </div>
         </div>
       </template>
