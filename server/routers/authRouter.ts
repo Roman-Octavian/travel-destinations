@@ -30,14 +30,14 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
     });
 
     res.cookie('refreshToken', refreshToken, {
-      httpOnly: false,
-      secure: false,
+      httpOnly: true,
+      secure: true,
       sameSite: 'lax',
       maxAge: Number(process.env.JWT_REFRESH_LIFESPAN) * 24 * 60 * 60 * 1000,
     });
     res.cookie('accessToken', accessToken, {
-      httpOnly: false,
-      secure: false,
+      httpOnly: true,
+      secure: true,
       maxAge: Number(process.env.JWT_ACCESS_LIFESPAN) * 60 * 1000,
       sameSite: 'lax',
     });
