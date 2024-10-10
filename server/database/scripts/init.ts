@@ -1,5 +1,6 @@
 import { connection as mongo } from '../connection';
-import { User, Destination, type DestinationType } from '../schema';
+import { User, Destination } from '../schema';
+import { Destination as DestinationType } from '@packages/types';
 import bcrypt from 'bcrypt';
 
 await User.deleteMany({});
