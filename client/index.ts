@@ -160,6 +160,12 @@ const updateAuthButtons = () => {
 };
 
 logoutButton.addEventListener('click', async () => {
+  const confirmed = confirm('Are you sure you want to log out?');
+
+  if (!confirmed) {
+    return; // If the user clicks "Cancel", exit the function without logging out
+  }
+
   try {
     const result = await axiosLoginInstance.get('/logout');
 
@@ -167,8 +173,7 @@ logoutButton.addEventListener('click', async () => {
       // Set isLoggedIn to false in localStorage after logout
       localStorage.setItem('isLoggedIn', 'false');
       alert('Successfully logged out');
-
-      // Update UI to reflect logged-out status, e.g., show login button
+      updateAuthButtons();
     }
   } catch (error) {
     alert('Logout failed. Please try again.');
