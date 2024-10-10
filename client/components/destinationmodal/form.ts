@@ -58,7 +58,9 @@ export const populateForm = async (destinationId: string) => {
         currentImagePreview.classList.add('hidden');
       }
 
-      descriptionInput.dispatchEvent(new Event('input'));
+      requestAnimationFrame(() => {
+        adjustTextareaHeight(descriptionInput);
+      });
     } else {
       showPopup('Error', 'Unable to find the destination. Please try again.', 'error');
     }
@@ -92,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function () {
   if (descriptionInput) {
     descriptionInput.style.height = 'auto';
     adjustTextareaHeight(descriptionInput);
-
     descriptionInput.addEventListener('input', () => adjustTextareaHeight(descriptionInput));
   }
 });
@@ -136,7 +137,6 @@ export const validateForm = (formData: FormData): { valid: boolean; message: str
 export const handleFormSubmission = async (e: Event) => {
   e.preventDefault();
 
-  const userId = '1'; // TODO: Get userId from logged-in user
   const country = (document.getElementById('country') as HTMLSelectElement).value;
   const location = (document.getElementById('location') as HTMLInputElement).value;
   const description = (document.getElementById('description') as HTMLTextAreaElement).value;
@@ -174,7 +174,6 @@ export const handleFormSubmission = async (e: Event) => {
   }
 
   const destinationData = {
-    user_id: userId,
     country,
     location,
     description,

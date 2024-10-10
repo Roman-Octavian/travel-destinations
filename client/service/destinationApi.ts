@@ -1,5 +1,4 @@
 interface Destination {
-  user_id: string;
   location: string;
   country: string;
   description: string;
@@ -15,22 +14,24 @@ interface ApiResponse {
 
 export async function createDestination(destination: Destination): Promise<ApiResponse> {
   try {
-    console.log(destination, 'in api');
     const response = await fetch('http://localhost:8080/api/v1/destination', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify(destination),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
+      if (response.status === 401) {
+        return { success: false, message: 'Unauthorized: Please log in' };
+      }
       return { success: false, message: errorData.message || 'Failed to create destination' };
     }
 
-    const responseData = await response.json();
-    return { success: responseData.success, message: responseData.message };
+    return await response.json();
   } catch (e) {
     console.error(e);
     return { success: false, message: String(e) };
@@ -47,6 +48,7 @@ export async function updateDestination(
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify(updatedData),
     });
 
@@ -65,7 +67,9 @@ export async function updateDestination(
 
 export async function getDestinationById(destinationId: string): Promise<Destination | null> {
   try {
-    const response = await fetch(`http://localhost:8080/api/v1/destination/${destinationId}`);
+    const response = await fetch(`http://localhost:8080/api/v1/destination/${destinationId}`, {
+      credentials: 'include',
+    });
 
     const responseData = await response.json();
 

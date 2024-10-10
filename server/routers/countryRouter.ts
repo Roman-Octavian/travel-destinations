@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { type Country } from '../database/schema/types/country.js';
+import { authenticator } from '../utils/auth';
 
 const router = Router();
 
@@ -200,7 +201,7 @@ export const countries: Country[] = [
   'Zimbabwe',
 ];
 
-router.get('/countries', (_req, res) => {
+router.get('/countries', authenticator, (_req, res) => {
   res.status(200).json(countries);
 });
 
