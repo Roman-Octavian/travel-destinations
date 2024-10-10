@@ -13,11 +13,6 @@ interface ApiResponse {
   message: string;
 }
 
-/**
- * Create a new destination
- * @param destination
- * @returns
- */
 export async function createDestination(destination: Destination): Promise<ApiResponse> {
   try {
     console.log(destination, 'in api');
@@ -34,19 +29,14 @@ export async function createDestination(destination: Destination): Promise<ApiRe
       return { success: false, message: errorData.message || 'Failed to create destination' };
     }
 
-    return await response.json();
+    const responseData = await response.json();
+    return { success: responseData.success, message: responseData.message };
   } catch (e) {
     console.error(e);
     return { success: false, message: String(e) };
   }
 }
 
-/**
- * Update an existing destination
- * @param destinationId
- * @param updatedData
- * @returns
- */
 export async function updateDestination(
   destinationId: string,
   updatedData: Partial<Destination>,
@@ -60,14 +50,33 @@ export async function updateDestination(
       body: JSON.stringify(updatedData),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      return { success: false, message: errorData.message || 'Failed to update destination' };
+    const responseData = await response.json();
+
+    if (!response.ok || !responseData.success) {
+      return { success: false, message: responseData.message || 'Failed to update destination' };
     }
 
-    return await response.json();
+    return { success: true, message: responseData.message };
   } catch (e) {
     console.error(e);
     return { success: false, message: String(e) };
+  }
+}
+
+export async function getDestinationById(destinationId: string): Promise<Destination | null> {
+  try {
+    const response = await fetch(`http://localhost:8080/api/v1/destination/${destinationId}`);
+
+    const responseData = await response.json();
+
+    if (!response.ok || !responseData.success) {
+      console.error(responseData.message);
+      return null;
+    }
+
+    return responseData.data;
+  } catch (e) {
+    console.error(e);
+    return null;
   }
 }

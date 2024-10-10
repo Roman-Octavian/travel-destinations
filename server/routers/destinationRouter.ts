@@ -12,9 +12,26 @@ router.get('/destination', async (_req, res) => {
   }
 });
 
+router.get('/destination/:id', async (req, res) => {
+  try {
+    const destination = await Destination.findById(req.params.id);
+
+    if (!destination) {
+      res.status(404).json({ success: false, message: 'Destination not found' });
+      return;
+    }
+
+    res
+      .status(200)
+      .json({ success: true, message: 'Destination retrieved successfully', data: destination });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
+
 router.post('/destination', async (req, res) => {
   try {
-    console.log('server', req.body);
     const { user_id, location, country, description, date_start, date_end, image } = req.body;
 
     const destinationData = {
@@ -29,14 +46,19 @@ router.post('/destination', async (req, res) => {
 
     const destination = new Destination(destinationData);
     await destination.save();
-    res.status(201).json(destination);
+
+    res.status(201).json({
+      success: true,
+      message: 'Destination created successfully',
+      data: destination,
+    });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ message: 'Unable to save destination' });
+    res.status(500).json({ success: false, message: 'Unable to save destination' });
   }
 });
 
-router.patch('/destination/:id', async (req, res): Promise<void> => {
+router.patch('/destination/:id', async (req, res) => {
   try {
     const updatedDestination = await Destination.findByIdAndUpdate(
       req.params.id,
@@ -45,14 +67,20 @@ router.patch('/destination/:id', async (req, res): Promise<void> => {
     );
 
     if (!updatedDestination) {
-      res.status(404).json({ message: 'Destination not found' });
+      res.status(404).json({ success: false, message: 'Destination not found' });
       return;
     }
 
-    res.status(200).json(updatedDestination);
+    res.status(200).json({
+      success: true,
+      message: 'Destination updated successfully',
+      data: updatedDestination,
+    });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ message: 'Unable to update destination', error: e.message });
+    res
+      .status(500)
+      .json({ success: false, message: 'Unable to update destination', error: e.message });
   }
 });
 
