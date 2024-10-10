@@ -1,5 +1,4 @@
 import { type UploadResponse, type DeleteResponse } from '@packages/types';
-import { axiosInstance } from '../utils/axiosConfig.ts';
 
 /**
  * Use the storage API to upload an image to our Azure Blob Storage Account
@@ -13,17 +12,25 @@ export async function uploadImage(file: File): Promise<UploadResponse> {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await axiosInstance.post<UploadResponse>('/storage/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    const response = await fetch('http://localhost:8080/api/v1/storage/upload', {
+      method: 'POST',
+      credentials: 'include',
+      body: formData,
     });
 
-    return response.data;
-  } catch (error) {
-    console.error(error);
+    if (!response.ok) {
+      console.error(response);
+      return {
+        message: 'Failed to make HTTP request',
+        success: false,
+      };
+    }
+
+    return await response.json();
+  } catch (e) {
+    console.error(e);
     return {
-      message: error instanceof Error ? error.message : 'An unknown error occurred',
+      message: String(e),
       success: false,
     };
   }
@@ -36,14 +43,19 @@ export async function uploadImage(file: File): Promise<UploadResponse> {
  */
 export async function deleteImage(imageName: string): Promise<DeleteResponse> {
   try {
-    const response = await axiosInstance.post<DeleteResponse>('/storage/delete', {
-      name: imageName,
+    const response = await fetch('http://localhost:8080/api/v1/storage/delete', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: imageName }),
     });
-    return response.data;
-  } catch (error) {
-    console.error(error);
+    return await response.json();
+  } catch (e) {
+    console.error(e);
     return {
-      message: error instanceof Error ? error.message : 'An unknown error occurred',
+      message: String(e),
       success: false,
     };
   }
