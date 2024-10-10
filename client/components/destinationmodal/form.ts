@@ -6,7 +6,8 @@ import {
 import { uploadImage } from '../../storage';
 import { hideModal, isCreateMode, currentDestinationId } from './index';
 import { showPopup, initializePopup } from '../customAlert';
-import { countries } from '@packages/types/countriesList.ts';
+import { COUNTRIES } from '../../utils/countries';
+import { refreshDestinations } from '../../utils/populate';
 
 interface FormData {
   location: string;
@@ -110,14 +111,14 @@ export const formatDateForInput = (isoDate: string): string => {
 export const populateCountryDropdown = async () => {
   const countrySelect = document.getElementById('country') as HTMLSelectElement;
   try {
-    countries.forEach((country) => {
+    COUNTRIES.forEach((country) => {
       const option = document.createElement('option');
       option.value = country;
       option.textContent = country;
       countrySelect.appendChild(option);
     });
   } catch (error) {
-    console.error('Error fetching countries:', error);
+    console.error('Error populating countries:', error);
   }
 };
 
@@ -150,7 +151,7 @@ export const handleFormSubmission = async (e: Event) => {
     return;
   }
 
-  let imageUrl = '';
+  let imageUrl = './placeholder-img.png';
 
   if (image) {
     try {
@@ -197,6 +198,8 @@ export const handleFormSubmission = async (e: Event) => {
       );
       (e.target as HTMLFormElement).reset();
       hideModal();
+
+      await refreshDestinations();
     } else {
       showPopup('Error', 'Failed to save destination: ' + response?.message, 'error');
     }

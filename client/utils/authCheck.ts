@@ -17,3 +17,8 @@ export const checkAuth = async (): Promise<boolean> => {
     return false;
   }
 };
+
+// Check if user is logged in based on 'isLoggedIn' in local storage
+export const checkUserLoggedIn = () => {
+  return localStorage.getItem('isLoggedIn') === 'true';
+};
