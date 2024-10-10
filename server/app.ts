@@ -23,9 +23,9 @@ app.use(express.json());
 const VERSIONED_API_PATH = '/api/v1';
 
 app.use(VERSIONED_API_PATH + '/auth', authRouter);
-app.use(VERSIONED_API_PATH, userRouter);
-app.use(VERSIONED_API_PATH, destinationRouter);
-app.use(VERSIONED_API_PATH, storageRouter);
+app.use(VERSIONED_API_PATH + '/user', userRouter);
+app.use(VERSIONED_API_PATH + '/storage', storageRouter);
+app.use(VERSIONED_API_PATH + '/destination', destinationRouter);
 
 app.use(errorHandler);
 
