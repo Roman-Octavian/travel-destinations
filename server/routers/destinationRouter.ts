@@ -4,7 +4,7 @@ import { authenticator } from '../utils/auth';
 
 const router = Router();
 
-router.get('/destination', async (_req, res) => {
+router.get('/', async (_req, res) => {
   try {
     res.status(200).json(await Destination.find());
   } catch (e) {

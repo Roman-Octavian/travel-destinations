@@ -1,5 +1,6 @@
 import { connection as mongo } from '../connection';
 import { User, Destination, type DestinationType } from '../schema';
+import bcrypt from 'bcrypt';
 
 await User.deleteMany({});
 await Destination.deleteMany({});
@@ -8,13 +9,16 @@ const now = new Date();
 const nextMonth = new Date();
 nextMonth.setMonth(now.getMonth() + 1);
 
+const defaultImage =
+  'https://tempdevstorageaccount.blob.core.windows.net/container/20240425_194004.jpg';
+
 const DESTINATIONS: DestinationType[] = [
   {
     location: '1111 Avenue',
     country: 'Barbados',
     date_start: now,
     date_end: nextMonth,
-    image: '',
+    image: defaultImage,
     description: 'The 1111th Avenue',
     user_id: 'admin',
   },
@@ -23,7 +27,7 @@ const DESTINATIONS: DestinationType[] = [
     country: 'Denmark',
     date_start: now,
     date_end: nextMonth,
-    image: '',
+    image: defaultImage,
     description: 'The capital city of Denmark',
     user_id: 'admin',
   },
@@ -32,13 +36,18 @@ const DESTINATIONS: DestinationType[] = [
     country: 'Afghanistan',
     date_start: now,
     date_end: nextMonth,
-    image: '',
+    image: defaultImage,
     description: 'From where three-letter agencies source raw material for the opioid crisis',
     user_id: 'admin',
   },
 ];
 
-await new User({ name: 'admin', username: 'admin', password: 'admin' }).save();
+await new User({
+  name: 'admin',
+  username: 'admin',
+  password: await bcrypt.hash('admin', 10),
+}).save();
+
 await Destination.insertMany(DESTINATIONS);
 
 await mongo.connection.close();
