@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { Destination, User } from '../database';
 import { authenticator } from '../utils/auth';
-import { BSON } from 'mongodb';
 
 const router = Router();
 
@@ -13,26 +12,6 @@ router.get('/', async (_req, res) => {
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: 'Internal Server Error' });
-  }
-});
-
-router.get('/:id', authenticator, async (req, res) => {
-  try {
-    const destination = await Destination.findById(req.params.id);
-
-    if (!destination) {
-      res.status(404).json({ success: false, message: 'Destination not found' });
-      return;
-    }
-
-    res.status(200).json({
-      success: true,
-      message: 'Destination retrieved successfully',
-      data: destination,
-    });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 });
 

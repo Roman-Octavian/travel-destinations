@@ -1,15 +1,5 @@
 import mongoose from 'mongoose';
-import { Country } from '@packages/types/country';
-
-export type DestinationType = {
-  location: string;
-  country: Country;
-  date_start: Date;
-  date_end: Date;
-  image: string;
-  description: string;
-  user_id: string;
-};
+import { type Destination as DestinationType } from '@packages/types';
 
 const destinationSchema = new mongoose.Schema<DestinationType>({
   location: {
