@@ -8,7 +8,7 @@ const router = Router();
 let upload = multer();
 router.use(authenticator);
 
-router.post('/storage/upload', upload.single('file'), async (req, res) => {
+router.post('/upload', upload.single('file'), async (req, res) => {
   try {
     const blob = new Blob([req.file.buffer]);
     const upload = await createBlob({
@@ -33,7 +33,7 @@ router.post('/storage/upload', upload.single('file'), async (req, res) => {
   }
 });
 
-router.post('/storage/delete', async (req, res) => {
+router.post('/delete', async (req, res) => {
   try {
     const filename = req.body.name;
 
