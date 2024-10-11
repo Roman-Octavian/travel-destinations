@@ -4,7 +4,7 @@ import {
   updateDestination,
 } from '../../service/destinationApi';
 import { uploadImage } from '../../storage';
-import { hideModal, isCreateMode, currentDestinationId } from './index';
+import { hideModal, isCreateMode, currentDestinationId, destinationModal } from './index';
 import { showPopup, initializePopup } from '../customAlert';
 import { COUNTRIES } from '../../utils/countries';
 import { refreshDestinations } from '../../utils/populate';
@@ -203,6 +203,8 @@ export const handleFormSubmission = async (e: Event) => {
       hideModal();
 
       await refreshDestinations();
+
+      destinationModal();
     } else {
       showPopup('Error', 'Failed to save destination: ' + response?.message, 'error');
     }

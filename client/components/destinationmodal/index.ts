@@ -29,10 +29,6 @@ export const hideModal = () => {
 };
 
 export const destinationModal = () => {
-  if (document.getElementById('destinationModal')) {
-    return;
-  }
-
   const modalTemplate = document.createElement('template');
   modalTemplate.innerHTML = HTML.trim();
 
