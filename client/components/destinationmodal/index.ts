@@ -6,7 +6,10 @@ let isCreateMode = true;
 let currentDestinationId: string | null = null;
 
 export const showModal = (title: string) => {
-  if (!checkAuth()) return;
+  if (!checkAuth() || localStorage.getItem('isLoggedIn') !== 'true') {
+    alert('You must be logged in to add destinations.');
+    return;
+  }
   const modal = document.getElementById('destinationModal') as HTMLElement;
   const modalTitle = document.getElementById('modalTitle') as HTMLElement;
   const submitButton = document.querySelector(

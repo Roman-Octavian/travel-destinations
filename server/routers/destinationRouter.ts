@@ -31,6 +31,10 @@ router.post('/', authenticator, async (req, res) => {
   try {
     const { location, country, description, date_start, date_end, image } = req.body;
 
+    if (!location || !country || !description || !date_start || !date_end) {
+      res.status(400).json({ success: false, message: 'Missing required fields' });
+    }
+
     const username = res.locals.userInfo?.username;
     if (!username) {
       res.status(401).json({ success: false, message: 'Unauthorized: Missing user information' });
