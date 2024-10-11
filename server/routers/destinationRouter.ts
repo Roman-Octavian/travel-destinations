@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { Destination, User } from '../database';
 import { authenticator } from '../utils/auth';
+import { BSON } from 'mongodb';
 import mongoose from 'mongoose';
 
 const router = Router();
@@ -10,6 +11,15 @@ router.get('/', async (_req, res) => {
   try {
     const allDestinations = await Destination.find();
     res.status(200).json(allDestinations);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+router.get('/get/:id', authenticator, async (req, res) => {
+  try {
+    res.status(200).json(await Destination.findOne({ _id: req.params.id }));
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: 'Internal Server Error' });
@@ -119,7 +129,7 @@ router.delete('/:id', authenticator, async (req, res) => {
     console.log('Destination ID:', destinationId);
 
     // Convert the userId to a MongoDB ObjectId using the 'new' keyword
-    const userId = new mongoose.Types.ObjectId(res.locals.userInfo.id);
+    const userId = new BSON.ObjectId(res.locals.userInfo.id);
     console.log('User ID:', userId);
 
     // Query the destination by _id and user_id

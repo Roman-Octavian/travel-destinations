@@ -6,7 +6,7 @@ interface Destination {
   description: string;
   date_start: string;
   date_end: string;
-  image: string;
+  image?: string;
 }
 
 interface ApiResponse {
@@ -60,10 +60,10 @@ export async function updateDestination(
 
 export async function getDestinationById(destinationId: string): Promise<Destination | null> {
   try {
-    const response = await axiosInstance.get(`/destination/${destinationId}`);
-
-    if (response.data.success) {
-      return response.data.data;
+    const response = await axiosInstance.get(`/destination/get/${destinationId}`);
+    console.log(response);
+    if (response.data) {
+      return response.data;
     } else {
       console.error(response.data.message);
       return null;

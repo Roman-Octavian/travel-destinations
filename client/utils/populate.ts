@@ -27,6 +27,7 @@ const populateDestinations = (destinations: Destination[], isUserSpecific: boole
     const dateElement = clone.querySelector('.date span');
     const descriptionElement = clone.querySelector('.description');
     const deleteButton = clone.querySelector('.delete-button') as HTMLElement;
+    const updateButton = clone.querySelector('.update-button') as HTMLButtonElement;
     const destinationIDDataset = clone.querySelector('.template-wrapper') as HTMLElement;
     const imageElement = clone.querySelector('.image') as HTMLImageElement;
 
@@ -65,6 +66,13 @@ const populateDestinations = (destinations: Destination[], isUserSpecific: boole
       });
     } else if (deleteButton) {
       deleteButton.style.display = 'none'; // Hide delete button for non-user destinations
+    }
+
+    // Handle update button for user-specific destinations
+    if (isUserSpecific && updateButton) {
+      updateButton.setAttribute('data-destination-id', destination._id);
+    } else if (updateButton) {
+      updateButton.style.display = 'none'; // Hide update button for non-user destinations
     }
 
     // Append to the destination list

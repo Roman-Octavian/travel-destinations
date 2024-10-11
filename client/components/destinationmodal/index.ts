@@ -51,8 +51,7 @@ export const destinationModal = () => {
   });
 
   closeModalBtn?.addEventListener('click', hideModal);
-
-  document.querySelectorAll('.update-btn').forEach((button) => {
+  document.querySelectorAll('.update-button').forEach((button) => {
     button.addEventListener('click', async (e) => {
       const target = e.target as HTMLElement;
       const destinationId = target.getAttribute('data-destination-id');
@@ -88,7 +87,7 @@ export const destinationModal = () => {
   attachDatePickerListeners();
 };
 
-const attachDatePickerListeners = () => {
+export const attachDatePickerListeners = () => {
   const iconStart = document.getElementById('calendar-icon-start') as HTMLImageElement | null;
   const iconEnd = document.getElementById('calendar-icon-end') as HTMLImageElement | null;
   const dateStart = document.getElementById('datepicker-start') as HTMLInputElement | null;
@@ -116,10 +115,5 @@ const attachDatePickerListeners = () => {
     });
   }
 };
-
-document.addEventListener('DOMContentLoaded', () => {
-  destinationModal();
-  attachDatePickerListeners();
-});
 
 export { isCreateMode, currentDestinationId };

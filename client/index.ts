@@ -1,4 +1,4 @@
-import { destinationModal } from './components/destinationmodal/index';
+import { attachDatePickerListeners, destinationModal } from './components/destinationmodal/index';
 import popup from './components/popup';
 import { axiosLoginInstance } from '../client/utils/axiosConfig.ts';
 import { checkUserLoggedIn } from './utils/authCheck.ts';
@@ -71,7 +71,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   await refreshDestinations();
   // Update buttons based on login status
   updateAuthButtons();
-});
 
-destinationModal();
-popup();
+  destinationModal();
+
+  popup();
+
+  attachDatePickerListeners();
+});

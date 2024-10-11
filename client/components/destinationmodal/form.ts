@@ -142,6 +142,7 @@ export const handleFormSubmission = async (e: Event) => {
   const description = (document.getElementById('description') as HTMLTextAreaElement).value;
   const startDate = (document.getElementById('datepicker-start') as HTMLInputElement).value;
   const endDate = (document.getElementById('datepicker-end') as HTMLInputElement).value;
+  const currentSrc = (document.getElementById('current-image-preview') as HTMLImageElement).src;
   const image = (document.getElementById('image-upload') as HTMLInputElement).files?.[0];
 
   const formData: FormData = { country, location, startDate, endDate };
@@ -151,7 +152,9 @@ export const handleFormSubmission = async (e: Event) => {
     return;
   }
 
-  let imageUrl = './placeholder-img.png';
+  let imageUrl = currentSrc.includes('tempdevstorageaccount.blob.core.windows.net')
+    ? currentSrc
+    : './placeholder-img.png';
 
   if (image) {
     try {
