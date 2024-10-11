@@ -57,6 +57,7 @@ logoutButton.addEventListener('click', async () => {
       localStorage.setItem('isLoggedIn', 'false');
       alert('Successfully logged out');
       updateAuthButtons();
+      document.dispatchEvent(new CustomEvent('userLoggedOut'));
     }
   } catch (error) {
     alert('Logout failed. Please try again.');
@@ -80,6 +81,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 document.addEventListener('userLoggedIn', async () => {
   console.log('userLoggedIn event');
+  const navMenu = document.getElementById('navMenu');
+  if (navMenu) {
+    navMenu.classList.add('translate-x-full'); // Hide the navMenu
+  }
   checkUserLoggedIn();
 
   updateAuthButtons();
@@ -90,4 +95,11 @@ document.addEventListener('userLoggedIn', async () => {
 
   attachDatePickerListeners();
   await refreshDestinations();
+});
+
+document.addEventListener('userLoggedOut', () => {
+  const navMenu = document.getElementById('navMenu');
+  if (navMenu) {
+    navMenu.classList.add('translate-x-full'); // Hide the navMenu
+  }
 });
