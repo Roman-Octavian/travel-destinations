@@ -232,7 +232,7 @@ const popup = () => {
       if (isLogin) {
         localStorage.setItem('isLoggedIn', 'true');
         hideModal();
-        window.location.reload();
+        document.dispatchEvent(new CustomEvent('userLoggedIn'));
       } else {
         toggleFormFunction();
       }

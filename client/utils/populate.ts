@@ -1,6 +1,7 @@
 import { type Destination as DestinationType } from '@packages/types';
 import { axiosInstance } from './axiosConfig.ts';
 import { checkUserLoggedIn } from './authCheck.ts';
+import { populateForm } from '../components/destinationmodal/form.ts';
 
 type Destination = DestinationType & { _id: string };
 
@@ -71,6 +72,26 @@ const populateDestinations = (destinations: Destination[], isUserSpecific: boole
     // Handle update button for user-specific destinations
     if (isUserSpecific && updateButton) {
       updateButton.setAttribute('data-destination-id', destination._id);
+      updateButton.addEventListener('click', async () => {
+        const destinationId = updateButton.getAttribute('data-destination-id');
+        if (destinationId) {
+          const modal = document.getElementById('destinationModal') as HTMLElement;
+          const modalTitle = document.getElementById('modalTitle') as HTMLElement;
+          const submitButton = document.querySelector(
+            '#destinationForm button[type="submit"]',
+          ) as HTMLButtonElement;
+
+          if (modal) {
+            modalTitle.textContent = 'UPDATE DESTINATION';
+            submitButton.textContent = 'UPDATE DESTINATION';
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+          }
+
+          // Populate the form with the destination data
+          await populateForm(destinationId);
+        }
+      });
     } else if (updateButton) {
       updateButton.style.display = 'none'; // Hide update button for non-user destinations
     }

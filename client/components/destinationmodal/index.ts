@@ -1,5 +1,5 @@
 import HTML from './index.html?raw';
-import { resetForm, populateForm, populateCountryDropdown, handleFormSubmission } from './form';
+import { resetForm, populateCountryDropdown, handleFormSubmission } from './form';
 import { checkAuth } from '../../utils/authCheck.ts';
 
 let isCreateMode = true;
@@ -20,12 +20,15 @@ export const showModal = (title: string) => {
     modalTitle.textContent = title;
     submitButton.textContent = isCreateMode ? 'ADD NEW DESTINATION' : 'UPDATE DESTINATION';
     modal.classList.remove('hidden');
+    modal.classList.add('flex');
   }
 };
 
 export const hideModal = () => {
   const modal = document.getElementById('destinationModal') as HTMLElement;
-  if (modal) modal.classList.add('hidden');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
 };
 
 export const destinationModal = () => {
@@ -50,18 +53,6 @@ export const destinationModal = () => {
   });
 
   closeModalBtn?.addEventListener('click', hideModal);
-  document.querySelectorAll('.update-button').forEach((button) => {
-    button.addEventListener('click', async (e) => {
-      const target = e.target as HTMLElement;
-      const destinationId = target.getAttribute('data-destination-id');
-      if (destinationId) {
-        isCreateMode = false;
-        currentDestinationId = destinationId;
-        await populateForm(destinationId);
-        showModal('UPDATE DESTINATION');
-      }
-    });
-  });
 
   imageInput.addEventListener('change', () => {
     if (imageInput.files && imageInput.files[0]) {

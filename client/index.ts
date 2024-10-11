@@ -78,3 +78,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   attachDatePickerListeners();
 });
+document.addEventListener('userLoggedIn', async () => {
+  console.log('userLoggedIn event');
+  checkUserLoggedIn();
+
+  updateAuthButtons();
+
+  destinationModal();
+
+  popup();
+
+  attachDatePickerListeners();
+  await refreshDestinations();
+});
